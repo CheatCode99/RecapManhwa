@@ -1,18 +1,20 @@
-const { invoke } = window.__TAURI__.core;
+console.log("main.js start");
 
-let greetInputEl;
-let greetMsgEl;
-
-async function greet() {
-  // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-  greetMsgEl.textContent = await invoke("greet", { name: greetInputEl.value });
-}
+import { renderHomeScreen } from "./screens/home/home_screen.js";
 
 window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
-  document.querySelector("#greet-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    greet();
-  });
+  try {
+    console.log("DOMContentLoaded fired");
+
+    const app = document.querySelector("#app");
+
+    if (!app) {
+      throw new Error("App root #app was not found.");
+    }
+
+    renderHomeScreen(app);
+    console.log("render success");
+  } catch (error) {
+    console.error("Render failed:", error);
+  }
 });
