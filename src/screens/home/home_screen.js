@@ -22,7 +22,8 @@ export function renderHomeScreen(container) {
       <button class="toolbar-btn" id="export-panels-btn">Export Panels</button>
       <button class="toolbar-btn" id="export-narration-btn">Export Narration</button>
       <button class="toolbar-btn" id="kokoro-tts-btn">Kokoro-TTS</button>
-      <button class="toolbar-btn">Video Compositor</button>
+      <button class="toolbar-btn" id="edge-tts-btn">Edge-TTS</button>
+      <button class="toolbar-btn" id="video-compositor-btn">Video Compositor</button>
     </header>
 
     <section class="workspace-shell">
@@ -70,7 +71,8 @@ function bindHomeScreenEvents(container) {
   const exportPanelsButton = container.querySelector("#export-panels-btn");
   const exportNarrationButton = container.querySelector("#export-narration-btn");
   const kokoroTtsButton = container.querySelector("#kokoro-tts-btn");
-
+  const edgeTtsButton = container.querySelector("#edge-tts-btn");
+  const videoCompositorButton = container.querySelector("#video-compositor-btn");
   dialogClose?.addEventListener("click", closeImageDialog);
 
   document.addEventListener("keydown", (event) => {
@@ -116,7 +118,11 @@ function bindHomeScreenEvents(container) {
     });
   }
 
-
+  if (videoCompositorButton) {
+    videoCompositorButton.addEventListener("click", async () => {
+      await openVideoCompositorWindow();
+    });
+  }
   if (exportPanelsButton) {
     exportPanelsButton.addEventListener("click", async () => {
       try {
@@ -131,6 +137,11 @@ function bindHomeScreenEvents(container) {
   if (kokoroTtsButton) {
     kokoroTtsButton.addEventListener("click", async () => {
       await openKokoroTtsWindow();
+    });
+  }
+  if (edgeTtsButton) {
+    edgeTtsButton.addEventListener("click", async () => {
+      await openEdgeTtsWindow();
     });
   }
   if (exportNarrationButton) {
@@ -563,5 +574,61 @@ function makeDialogResizable() {
 
     isResizing = false;
     document.body.style.userSelect = "";
+  });
+}
+
+async function openVideoCompositorWindow() {
+  const { webviewWindow } = window.__TAURI__;
+
+  const existing = await webviewWindow.WebviewWindow.getByLabel("video-compositor");
+
+  if (existing) {
+    await existing.setFocus();
+    return;
+  }
+
+  const compositorWindow = new webviewWindow.WebviewWindow("video-compositor", {
+    title: "Video Compositor",
+    url: "video_compositor.html",
+    width: 1400,
+    height: 900,
+    resizable: true,
+    center: true
+  });
+
+  compositorWindow.once("tauri://created", () => {
+    console.log("Video Compositor window created");
+  });
+
+  compositorWindow.once("tauri://error", (e) => {
+    console.error("Failed to create Video Compositor window", e);
+  });
+}
+
+async function openEdgeTtsWindow() {
+  const { webviewWindow } = window.__TAURI__;
+
+  const existing = await webviewWindow.WebviewWindow.getByLabel("edge-tts");
+
+  if (existing) {
+    await existing.setFocus();
+    return;
+  }
+
+  const ttsWindow = new webviewWindow.WebviewWindow("edge-tts", {
+    title: "Edge-TTS",
+    url: "edge_tts.html",
+    width: 1000,
+    height: 760,
+    resizable: true,
+    center: true
+  });
+
+  ttsWindow.once("tauri://created", () => {
+    console.log("Edge-TTS window created");
+  });
+
+  ttsWindow.once("tauri://error", (e) => {
+    console.error("Failed to create Edge-TTS window", e);
   });
 }

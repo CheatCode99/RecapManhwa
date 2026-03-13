@@ -243,3 +243,63 @@ body,
 .hidden {
   display: none !important;
 }
+
+.tts-progress-wrap {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tts-progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #3a3f44;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.tts-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #2f86c7;
+  transition: width 0.2s ease;
+}
+
+.tts-progress-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tts-player-wrap {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 110px 110px 1fr 120px;
+  gap: 10px;
+  align-items: center;
+}
+
+.tts-audio-seek {
+  width: 100%;
+}
+
+.tts-audio-time {
+  text-align: right;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 860px) {
+  .tts-row.two-cols,
+  .tts-batch-row,
+  .tts-player-wrap,
+  .tts-action-row,
+  .tts-options-row {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .tts-options-row {
+    gap: 12px;
+  }
+}

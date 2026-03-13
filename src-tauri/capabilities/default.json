@@ -1,21 +1,63 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Capability for the main window",
+  "description": "Default capability for the main window and tool windows",
   "windows": [
     "main",
-    "kokoro-tts"
+    "kokoro-tts",
+    "edge-tts",
+    "video-compositor"
   ],
   "permissions": [
     "core:default",
     "core:webview:allow-create-webview-window",
     "core:window:allow-get-all-windows",
     "dialog:default",
-    "fs:read-files",
-    "fs:write-files",
+    "fs:read-all",
+    "fs:write-all",
+    "fs:allow-read-dir",
     "fs:allow-read-file",
     "fs:allow-write-file",
-    "fs:allow-read",
-    "fs:allow-write"
+    "fs:allow-copy-file",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "python-worker",
+          "cmd": "python",
+          "args": true
+        }
+      ]
+    },
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        {
+          "path": "$APPCACHE/*"
+        },
+        {
+          "path": "$APPCACHE/**/*"
+        },
+        {
+          "path": "$DESKTOP/*"
+        },
+        {
+          "path": "$DOCUMENT/*"
+        },
+        {
+          "path": "$DOWNLOAD/*"
+        }
+      ]
+    },
+    {
+      "identifier": "shell:allow-spawn",
+      "allow": [
+        {
+          "name": "python-worker",
+          "cmd": "python",
+          "args": true
+        }
+      ]
+    }
   ]
 }

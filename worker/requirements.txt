@@ -1,0 +1,4 @@
+kokoro-onnx
+soundfile
+numpy
+edge-tts==7.2.7
